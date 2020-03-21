@@ -29,14 +29,14 @@
         </div></div>
       <div class="content">
         <el-row>
-          <el-col :span=leftF v-if="xwNav">
+          <el-col :span=leftF>
             <leftNav :title='product'></leftNav>
           </el-col>
           <el-col :span=leftR>
             <div class="nodata" :class=" qitaBox.length != 0 ? '' : 'showL'"><img :src=noImg></div>
             <div class="grid-content bg-purple rightBox">
               <!--产品介绍、工程介绍-->
-              <div class="related-solution-box" v-if="newListStyle">
+              <div class="related-solution-box">
                 <ul class="b_flex b_start b_wrap qitaNew">
                   <li class="three_pc" v-for="(item,i) of qitaBox" :key="i"  @click="jump(item.url)">
                     <span>
@@ -56,7 +56,7 @@
                   </li>
                 </ul>
               </div>
-              <div class="soluBox" v-if="xwStyle">
+              <div class="soluBox">
                 <ul>
                   <li class="b_flex b_start" v-for="(item,i) of qitaBox" :key="i" @click="jump(item.url)" :class="[leftR==24?'activeHeigght':'']">
                     <div><img :src=item.thumb></div>
@@ -105,11 +105,7 @@
         product:'product',
         bigShow:'',
         id:window.location.href.split("=")[1],
-        xwStyle:false,
-        newListStyle:true,
-        caseListStyle:false,
         titleShow:false,
-        xwNav:true,
         newProTitle:'',
         blockImg:'',
         detailBox:[],
@@ -136,7 +132,7 @@
     },
     methods:{
       jump(target){
-        var id=window.location.href.split("=")[1];
+        var id=this.$route.query.slug;
         this.$router.push({path:'/detail',query:{url:target,title:id}})
       },
       banner(id){
@@ -150,43 +146,28 @@
         });
       },
       getDetailData(){
-        var id=window.location.href.split("=")[1];
+        var id=this.$route.query.slug
+        console.log(id)
         var target=''
         if(id=='product'){
           target='product'
-          this.newListStyle=true;
-          this.newProTitle='产品介绍';
-          this.xwStyle=false;
-          this.xwNav=true;
           this.leftR=19;
         }else  if(id=='solution'){
           target='solution'
-          this.newProTitle='工程介绍';
-          this.xwStyle=false;
-          this.xwNav=true;
-          this.newListStyle=true;
           this.leftR=19;
         }else  if(id=='case'){
           target='case';
-          this.newProTitle='精品案例';
-          this.caseListStyle=true;
-          this.newListStyle=false;
-          this.xwNav=true;
-          this.xwStyle=true;
           this.leftR=19;
         }else  if(id=='news'){
           target='news';
-          this.newProTitle='行业新闻';
-          this.caseListStyle=true;
-          this.newListStyle=false;
-          this.xwStyle=true;
-          this.xwNav=false;
           this.leftR=24;
         }
-        var url="http://api.jxhenan.com/api/articles/";
-        const DETAIL= params =>req('get',url,{category_url:target||id});
+        var url=`http://api.jxhenan.com/api/v1/article?slug=${id}`;
+        console.log(url)
+        const DETAIL= params =>req('get',url);
         let allData=DETAIL();
         allData.then((res)=>{
+          console.log(res)
             this.qitaBox=res.data;
             /*分页*/
             this.per_page=res.meta.pagination.per_page;

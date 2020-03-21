@@ -13,7 +13,7 @@ export default new Router({
       component:resolve=>require(['@/views/index'],resolve)//首页
     },
     {
-      path: '/product-solutions',
+      path: '/product',
       name: 'product-solutions',
       component:resolve=>require(['@/views/productList'],resolve)//产品列表
     },

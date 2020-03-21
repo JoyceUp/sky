@@ -1,6 +1,7 @@
 import axios from 'axios'
 var instance=axios.create({
-  baseURL:'http://sky.test',
+  // baseURL:'http://sky.test',
+  baseURL:'http://api.jxhenan.com',
   timeout:6000
 });
 //请求拦截器  忽略

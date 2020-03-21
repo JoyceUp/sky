@@ -48,7 +48,7 @@
                     v-for="child1 in menuList"
                     :key="child1.id"
                     v-if="child1.all_children.length!=0">
-          <span  slot="title" @click="jump1(child1.slug,child1.type)">{{child1.name}}</span>
+          <span  slot="title" @click="jump1(child1.slug,child1.type)">{{child1.name}}11</span>
           <!--判断二级菜单是否有子节点（没有的情况）-->
          <!-- <el-menu-item  :index="'/'+child2.id"
                          v-for="child2 in child1.all_children"
@@ -136,7 +136,12 @@ export default {
       console.log(slug,type)
       let routeData=''
       if(type==0){
-        routeData=this.$router.push('/article/category'+'?slug='+slug)
+        routeData=this.$router.push({
+          path:'/product',
+          query:{
+            slug:slug
+          }
+        })
       }
       window.open(routeData.href, '_blank');
     },
